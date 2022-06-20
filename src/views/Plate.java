@@ -93,16 +93,48 @@ public class Plate extends JPanel {
         }
     }
 
-    public void afficherPossibilitesNoir(int row, int col) {
-        if(this.isInPlate(row, col) && this.tourNoir){
-            if(this.getMatrice(row, col) == 0 && (this.getMatrice(row-1, col-1) != 0 || this.getMatrice(row-1, col+1) != 0)) {
-                this.getCase(row, col).setSelectionnee(true);
+    /*
+    if(this.isInPlate(row, col) && !this.tourNoir){
+            if(this.getMatrice(row, col) == 0) {
+                if(this.getMatrice(row-1, col-1) == 2 && (this.pionActive.getCase().getRow()- row-1) > 2) {
+                    this.afficherPossibilitesBlanc(row-1, col-1);
+                }
+                if(this.getMatrice(row-1, col+1) == 2 && (this.pionActive.getCase().getRow() - row-1) > 2) {
+                    this.afficherPossibilitesBlanc(row-1, col+1);
+                }
             }
-            if(this.getMatrice(row, col) == 2 && (this.getMatrice(row+1, col-1) == 0 || this.getMatrice(row+1, col+1) == 0)) {
-                this.afficherPossibilitesNoir(row+1, col-1);
-                this.afficherPossibilitesNoir(row+1, col+1);
+            if(this.getMatrice(row, col) == 1 && this.getMatrice(row-1, col-1) == 0) {
                 this.getPion(row, col).setSelected(true);
                 this.listDeletePion.add(this.getPion(row, col));
+                this.afficherPossibilitesBlanc(row-1, col-1);
+            }
+            if(this.getMatrice(row, col) == 1 && this.getMatrice(row-1, col+1) == 0) {
+                this.getPion(row, col).setSelected(true);
+                this.listDeletePion.add(this.getPion(row, col));
+                this.afficherPossibilitesBlanc(row-1, col+1);
+            }
+        }
+     */
+    public void afficherPossibilitesNoir(int row, int col) {
+        if(this.isInPlate(row, col) && this.tourNoir){
+            if(this.getMatrice(row, col) == 0) {
+                this.getCase(row, col).setSelectionnee(true);
+                if(this.getMatrice(row+1, col-1) == 2 && (row+1 - this.pionActive.getCase().getRow()) > 2) {
+                    this.afficherPossibilitesNoir(row+1, col-1);
+                }
+                if(this.getMatrice(row+1, col+1) == 2 && (row+1 - this.pionActive.getCase().getRow()) > 2) {
+                    this.afficherPossibilitesNoir(row+1, col+1);
+                }
+            }
+            if(this.getMatrice(row, col) == 2 && this.getMatrice(row+1, col-1) == 0) {
+                this.getPion(row, col).setSelected(true);
+                this.listDeletePion.add(this.getPion(row, col));
+                this.afficherPossibilitesNoir(row+1, col-1);
+            }
+            if(this.getMatrice(row, col) == 2 && this.getMatrice(row+1, col+1) == 0) {
+                this.getPion(row, col).setSelected(true);
+                this.listDeletePion.add(this.getPion(row, col));
+                this.afficherPossibilitesNoir(row+1, col+1);
             }
         }
     }
