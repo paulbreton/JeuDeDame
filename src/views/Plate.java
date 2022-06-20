@@ -85,8 +85,8 @@ public class Plate extends JPanel {
                 this.getCase(row, col).setSelectionnee(true);
             }
             if(this.getMatrice(row, col) == 1 && (this.getMatrice(row-1, col-1) == 0 || this.getMatrice(row-1, col+1) == 0)) {
-                this.afficherPossibilitesNoir(row-1, col-1);
-                this.afficherPossibilitesNoir(row-1, col+1);
+                this.afficherPossibilitesBlanc(row-1, col-1);
+                this.afficherPossibilitesBlanc(row-1, col+1);
                 this.getPion(row, col).setSelected(true);
                 this.listDeletePion.add(this.getPion(row, col));
             }
@@ -123,6 +123,7 @@ public class Plate extends JPanel {
         for (Pion pion : this.listDefenitiveDelete) {
             pion.getCase().removeAll();
             pion.getCase().repaint();
+            this.matrice[pion.getCase().getRow()][pion.getCase().getCol()] = 0;
         }
         this.resetDeletePion();
         this.listDefenitiveDelete.clear();
