@@ -13,6 +13,7 @@ public class Case extends JPanel {
     private int row;
     private int col;
     private boolean selectionnee;
+    private boolean possible;
 
     public Case(Couleur couleur, int row, int col){
         setLayout(new GridLayout(1,0));
@@ -29,12 +30,26 @@ public class Case extends JPanel {
     public boolean isSelectionnee() {
         return selectionnee;
     }
+    public boolean isPossible() {
+        return this.possible;
+    }
 
     public void setSelectionnee(boolean selectionnee) {
         this.selectionnee = selectionnee;
         if(selectionnee){
             setBackground(Color.RED);
             setForeground(Color.RED);
+        }
+        else {
+            initCouleur();
+        }
+    }
+
+    public void setPossible(boolean possible) {
+        this.possible = possible;
+        if(possible){
+            setBackground(new Color(150, 0, 0));
+            setForeground(new Color(150, 0, 0));
         }
         else {
             initCouleur();
@@ -67,4 +82,6 @@ public class Case extends JPanel {
     public void paintComponent(Graphics g){
         g.fillRect(0, 0, getWidth(), getHeight());
     }
+
+
 }

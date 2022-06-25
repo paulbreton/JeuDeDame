@@ -9,12 +9,12 @@ import models.*;
 
 
 public class Plate extends JPanel {
-    private Case caseActive;
     private Pion pionActive;
-    private ArrayList<Pion> listDeletePion = new ArrayList<Pion>();
+    private Pion pionSelect;
+    private final ArrayList<Pion> listDeletePion = new ArrayList<Pion>();
     public ArrayList<Pion> listDefenitiveDelete = new ArrayList<Pion>();
     private boolean tourNoir;
-    private int[][] matrice = new int[10][10];
+    private final int[][] matrice = new int[10][10];
 
     public Plate(){
         tourNoir=false;
@@ -81,25 +81,16 @@ public class Plate extends JPanel {
 
     public void afficherPossibilitesBlanc(int row, int col) {
         if(this.isInPlate(row, col) && !this.tourNoir){
-            if(this.getMatrice(row, col) == 0 && (this.getMatrice(row+1, col-1) != 0 || this.getMatrice(row+1, col+1) != 0)) {
-                this.getCase(row, col).setSelectionnee(true);
-            }
-            if(this.getMatrice(row, col) == 1 && (this.getMatrice(row-1, col-1) == 0 || this.getMatrice(row-1, col+1) == 0)) {
-                this.afficherPossibilitesBlanc(row-1, col-1);
-                this.afficherPossibilitesBlanc(row-1, col+1);
-                this.getPion(row, col).setSelected(true);
-                this.listDeletePion.add(this.getPion(row, col));
-            }
-        }
-    }
-
-    /*
-    if(this.isInPlate(row, col) && !this.tourNoir){
             if(this.getMatrice(row, col) == 0) {
-                if(this.getMatrice(row-1, col-1) == 2 && (this.pionActive.getCase().getRow()- row-1) > 2) {
+                if(this.pionSelect.getCase().getRow() - row == 1) {
+                    this.getCase(row, col).setSelectionnee(true);
+                } else {
+                    this.getCase(row, col).setPossible(true);
+                }
+                if(this.getMatrice(row-1, col-1) == 1 && (this.pionActive.getCase().getRow() - (row-1)) > 2) {
                     this.afficherPossibilitesBlanc(row-1, col-1);
                 }
-                if(this.getMatrice(row-1, col+1) == 2 && (this.pionActive.getCase().getRow() - row-1) > 2) {
+                if(this.getMatrice(row-1, col+1) == 1 && (this.pionActive.getCase().getRow() - (row-1)) > 2) {
                     this.afficherPossibilitesBlanc(row-1, col+1);
                 }
             }
@@ -114,11 +105,16 @@ public class Plate extends JPanel {
                 this.afficherPossibilitesBlanc(row-1, col+1);
             }
         }
-     */
+    }
+
     public void afficherPossibilitesNoir(int row, int col) {
         if(this.isInPlate(row, col) && this.tourNoir){
             if(this.getMatrice(row, col) == 0) {
-                this.getCase(row, col).setSelectionnee(true);
+                if(row - this.pionSelect.getCase().getRow() == 1) {
+                    this.getCase(row, col).setSelectionnee(true);
+                } else {
+                    this.getCase(row, col).setPossible(true);
+                }
                 if(this.getMatrice(row+1, col-1) == 2 && (row+1 - this.pionActive.getCase().getRow()) > 2) {
                     this.afficherPossibilitesNoir(row+1, col-1);
                 }
@@ -170,6 +166,7 @@ public class Plate extends JPanel {
         for (int i=0; i<10; i++) {
             for (int j=0; j<10; j++) {
                 getCase(i, j).setSelectionnee(false);
+                getCase(i, j).setPossible(false);
             }
         }
     }
@@ -180,22 +177,13 @@ public class Plate extends JPanel {
         }
         this.listDeletePion.clear();
     }
+
     public void setPionActive(Pion p) {
         this.pionActive = p;
     }
 
-    public void ajouterPionListDelete(Pion pion) {
-        this.listDeletePion.add(pion);
-    }
-
-    private void afficherMatrice() {
-        System.out.println(" ");
-        for (int i=0; i<10; i++){
-            for (int j=0; j<10; j++){
-                System.out.print(" "+this.matrice[i][j]);
-            }
-            System.out.println(" ");
-        }
+    public void setPionSelect(Pion p) {
+        this.pionSelect = p;
     }
 
     private boolean isInPlate(int row, int col) {

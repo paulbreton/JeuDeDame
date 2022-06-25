@@ -32,10 +32,10 @@ public class ListenerPion implements MouseListener {
 
     public void mousePressed(MouseEvent arg0) {
         plate.resetPossibility();
+        plate.setPionSelect(this.pion);
         if (this.pion.isSelect()) {
             plate.resetDeletePion();
             plate.listDefenitiveDelete.add(this.pion);
-            plate.resetDeletePion();
             this.pion.setSelected(true);
             if (this.pion.getCouleur() == Couleur.BLANC) {
                 plate.afficherPossibilitesNoir(this.pion.getCase().getRow()+1, this.pion.getCase().getCol()-1);
