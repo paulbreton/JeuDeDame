@@ -79,6 +79,16 @@ public class Plate extends JPanel {
         return (Pion) (getCase(i,j).getComponent(0));
     }
 
+    public void showPossibilities(Pion pion) {
+        if((pion.isSelect() && pion.getCouleur() == Couleur.BLANC) || (!pion.isSelect() && pion.getCouleur() == Couleur.NOIR)) {
+            this.afficherPossibilitesNoir(pion.getCase().getRow()+1, pion.getCase().getCol()-1);
+            this.afficherPossibilitesNoir(pion.getCase().getRow()+1, pion.getCase().getCol()+1);
+        } else {
+            this.afficherPossibilitesBlanc(pion.getCase().getRow()-1, pion.getCase().getCol()-1);
+            this.afficherPossibilitesBlanc(pion.getCase().getRow()-1, pion.getCase().getCol()+1);
+        }
+    }
+
     public void afficherPossibilitesBlanc(int row, int col) {
         if(this.isInPlate(row, col) && !this.tourNoir){
             if(this.getMatrice(row, col) == 0) {
@@ -94,12 +104,12 @@ public class Plate extends JPanel {
                     this.afficherPossibilitesBlanc(row-1, col+1);
                 }
             }
-            if(this.getMatrice(row, col) == 1 && this.getMatrice(row-1, col-1) == 0) {
+            if(this.getMatrice(row, col) == 1 && this.getMatrice(row-1, col-1) == 0 && this.pionSelect.getCouleur() != Couleur.NOIR) {
                 this.getPion(row, col).setSelected(true);
                 this.listDeletePion.add(this.getPion(row, col));
                 this.afficherPossibilitesBlanc(row-1, col-1);
             }
-            if(this.getMatrice(row, col) == 1 && this.getMatrice(row-1, col+1) == 0) {
+            if(this.getMatrice(row, col) == 1 && this.getMatrice(row-1, col+1) == 0 && this.pionSelect.getCouleur() != Couleur.NOIR) {
                 this.getPion(row, col).setSelected(true);
                 this.listDeletePion.add(this.getPion(row, col));
                 this.afficherPossibilitesBlanc(row-1, col+1);
@@ -122,12 +132,12 @@ public class Plate extends JPanel {
                     this.afficherPossibilitesNoir(row+1, col+1);
                 }
             }
-            if(this.getMatrice(row, col) == 2 && this.getMatrice(row+1, col-1) == 0) {
+            if(this.getMatrice(row, col) == 2 && this.getMatrice(row+1, col-1) == 0 && this.pionSelect.getCouleur() != Couleur.BLANC) {
                 this.getPion(row, col).setSelected(true);
                 this.listDeletePion.add(this.getPion(row, col));
                 this.afficherPossibilitesNoir(row+1, col-1);
             }
-            if(this.getMatrice(row, col) == 2 && this.getMatrice(row+1, col+1) == 0) {
+            if(this.getMatrice(row, col) == 2 && this.getMatrice(row+1, col+1) == 0 && this.pionSelect.getCouleur() != Couleur.BLANC) {
                 this.getPion(row, col).setSelected(true);
                 this.listDeletePion.add(this.getPion(row, col));
                 this.afficherPossibilitesNoir(row+1, col+1);
@@ -178,11 +188,19 @@ public class Plate extends JPanel {
         this.listDeletePion.clear();
     }
 
+    public void resetDeleteDefinitivePion() {
+        for (Pion pion: this.listDefenitiveDelete) {
+            pion.setSelected(false);
+        }
+        this.listDefenitiveDelete.clear();
+    }
+
     public void setPionActive(Pion p) {
         this.pionActive = p;
     }
 
     public void setPionSelect(Pion p) {
+        System.out.println(p.getCase().getRow());
         this.pionSelect = p;
     }
 
