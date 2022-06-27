@@ -1,14 +1,9 @@
-import views.Plate;
-
-import javax.swing.*;
+import views.ControlPanel;
 
 public class Main {
     public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.setSize(600, 600);
-        f.setLocationRelativeTo(null);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.add(new Plate());
-        f.setVisible(true);
+        ControlPanel ctrlPan = new ControlPanel("Jeu de dames");
+
+        ctrlPan.setVisible(true);
     }
 }
