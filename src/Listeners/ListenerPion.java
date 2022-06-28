@@ -31,11 +31,17 @@ public class ListenerPion implements MouseListener {
     }
 
     public void mousePressed(MouseEvent arg0) {
-        if (this.pion.getCouleur() == Couleur.BLANC) {
-            plate.afficherPossibilitesBlanc(this.pion);
+        this.plate.resetPossibility();
+        this.plate.setPionSelect(this.pion);
+        if (this.pion.isSelect()) {
+            this.plate.listDefenitiveDelete.add(this.pion);
+            this.pion.setSelected(true);
         } else {
-            plate.afficherPossibilitesNoir(this.pion);
+            this.plate.resetDeleteDefinitivePion();
+            this.plate.resetDeletePion();
+            this.plate.setPionActive(this.pion);
         }
+        this.plate.showPossibilities(this.pion);
     }
 
     public void mouseReleased(MouseEvent arg0) {
