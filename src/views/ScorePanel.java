@@ -1,26 +1,22 @@
 package views;
 
-import Listeners.ListenerControlPanel;
-import models.Couleur;
-import models.Player;
-import models.buttonType;
+import models.*;
 
-import javax.swing.*;
 import java.awt.*;
+import java.util.*;
+import javax.swing.*;
 
 
 public class ScorePanel extends JFrame
 {
-	private String player1Name, player2Name;
-	private Couleur player1Color, player2Color;
+	private Player player1, player2;
 	private JLabel labelScore1, labelScore2;
+	private JLabel labelPlayer1, labelPlayer2;
 
-	public ScorePanel( String name1, Couleur color1, String name2, Couleur color2)
+	public ScorePanel( Player player1, Player player2)
 	{
-		this.player1Name = name1;
-		this.player1Color = color1;
-		this.player2Name = name2;
-		this.player2Color = color2;
+		this.player1 = player1;
+		this.player2 = player2;
 
 	    this.setSize(450,150);
 	    this.setTitle("Score");
@@ -31,31 +27,36 @@ public class ScorePanel extends JFrame
 	    this.buildScoreWindow();
 	}
 
-	public void ChangePlayerScore( int score1, int score2) {
-		String text1 = "Score = " + score1;
-		String text2 = "Score = " + score2;
+	public void ChangePlayersPawnNbr() {
+		String text1 = "Nbr pawns = " + player1.getPawnNumber();
+		String text2 = "Nbr pawns = " + player2.getPawnNumber();
 
+		this.labelScore1.setText( text1 );
+		this.labelScore2.setText( text2 );
 	}
+
 
 	private void buildScoreWindow()
 	{
 		StringBuilder textPlayer1, textPlayer2;
 		String PlayColor;
+
+
 		textPlayer1 = new StringBuilder("Player 1 : ");
-		textPlayer1.append(this.player1Name);
-		JLabel labelPlayer1 = new JLabel(textPlayer1.toString());
-		labelPlayer1.setLocation(10,10);
-		labelPlayer1.setSize(250,20);
-	    this.add(labelPlayer1);
+		textPlayer1.append(this.player1.getName());
+		this.labelPlayer1 = new JLabel(textPlayer1.toString());
+		this.labelPlayer1.setLocation(10,10);
+		this.labelPlayer1.setSize(250,20);
+		this.add(this.labelPlayer1);
 
 		textPlayer2 = new StringBuilder("Player 2 : ");
-		textPlayer2.append(this.player2Name);
-		JLabel labelPlayer2 = new JLabel(textPlayer2.toString());
-		labelPlayer2.setLocation(300,10);
-		labelPlayer2.setSize(250,20);
-		this.add(labelPlayer2);
+		textPlayer2.append(this.player2.getName());
+		this.labelPlayer2 = new JLabel(textPlayer2.toString());
+		this.labelPlayer2.setLocation(300,10);
+		this.labelPlayer2.setSize(250,20);
+		this.add(this.labelPlayer2);
 
-		if( player1Color == Couleur.BLANC)
+		if( this.player1.getColor() == Couleur.BLANC)
 		{
 			PlayColor = "Color White";
 		}
@@ -68,7 +69,7 @@ public class ScorePanel extends JFrame
 		colorPlayer1.setSize(250,20);
 		this.add(colorPlayer1);
 
-		if( player2Color == Couleur.BLANC)
+		if( this.player2.getColor() == Couleur.BLANC)
 		{
 			PlayColor = "Color White";
 		}
@@ -82,17 +83,15 @@ public class ScorePanel extends JFrame
 		this.add(colorPlayer2);
 
 
-		this.labelScore1 = new JLabel("Score = 0");
+		this.labelScore1 = new JLabel("Nbr pions = 20");
 		this.labelScore1.setLocation(10,100);
 		this.labelScore1.setSize(250,20);
 	    this.add(this.labelScore1);
 
-		this.labelScore2 = new JLabel("Score = 0");
+		this.labelScore2 = new JLabel("Nbr pions = 20");
 		this.labelScore2.setLocation(300,100);
 		this.labelScore2.setSize(250,20);
 		this.add(this.labelScore2);
-
-
 	}
 
 }

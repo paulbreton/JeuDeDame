@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import controllers.*;
 import Listeners.*;
 import models.*;
 
@@ -15,8 +16,10 @@ public class Plate extends JPanel {
     public ArrayList<Pion> listDefenitiveDelete = new ArrayList<Pion>();
     private boolean tourNoir;
     private final int[][] matrice = new int[10][10];
+    private Game game;
 
-    public Plate(){
+    public Plate( Game jeu){
+        game = jeu;
         tourNoir=false;
         setLayout(new GridLayout(10, 10));
         for(int i=0; i<10; i++){
@@ -157,12 +160,22 @@ public class Plate extends JPanel {
         case1.add(this.pionActive);
         this.pionActive.setCase(case1);
 
-        this.tourNoir = !this.tourNoir;
         for (Pion pion : this.listDefenitiveDelete) {
             pion.getCase().removeAll();
             pion.getCase().repaint();
             this.matrice[pion.getCase().getRow()][pion.getCase().getCol()] = 0;
+
+            if(this.tourNoir)
+            {
+                this.game.decPawnWhite();
+            }
+            else
+            {
+                this.game.decPawnBlack();
+            }
         }
+        this.tourNoir = !this.tourNoir;
+
         this.resetDeletePion();
         this.listDefenitiveDelete.clear();
     }

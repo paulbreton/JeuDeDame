@@ -16,11 +16,11 @@ public class ListenerControlPanel implements ActionListener
     private Game game;
 
 
-    public ListenerControlPanel( buttonType type, Player player, ControlPanel panel)
+    public ListenerControlPanel( buttonType type, Game game, ControlPanel panel)
     {
         this.ctrlPanel = panel;
         this.type = type;
-        this.player = player;
+        this.game = game;
     }
 
     public void actionPerformed(ActionEvent event)
@@ -29,19 +29,22 @@ public class ListenerControlPanel implements ActionListener
         {
             case WHITE:
                 this.ctrlPanel.ChangePlayer2Color( Couleur.NOIR);
+                this.game.setColorPlayer1( Couleur.BLANC);
+                this.game.setColorPlayer2( Couleur.NOIR);
                 break;
 
             case BLACK:
                 this.ctrlPanel.ChangePlayer2Color( Couleur.BLANC);
+                this.game.setColorPlayer1( Couleur.NOIR);
+                this.game.setColorPlayer2( Couleur.BLANC);
                 break;
 
             case OK:
                 this.ctrlPanel.dispose();
-
-                game = new Game(    this.ctrlPanel.getPlayerName(Player.PLAYER1),
-                                    this.ctrlPanel.getPlayerColor(Player.PLAYER1),
-                                    this.ctrlPanel.getPlayerName(Player.PLAYER2),
-                                    this.ctrlPanel.getPlayerColor(Player.PLAYER2) );
+                this.game.setNamePlayer1(this.ctrlPanel.getPlayer1Name());
+                this.game.setNamePlayer2(this.ctrlPanel.getPlayer2Name());
+                this.game.startPlate();
+                this.game.startScorePanel();
                 break;
 
             case CANCEL:
@@ -50,20 +53,5 @@ public class ListenerControlPanel implements ActionListener
 
             default:
         }
-        /*
-        if ("disable".equals(event.getActionCommand())) {
-        b2.setEnabled(false);
-        b1.setEnabled(false);
-        b3.setEnabled(true);
-        } else {
-        b2.setEnabled(true);
-        b1.setEnabled(true);
-        b3.setEnabled(false);
-        }
-        if( this.type == buttonType.WHITE)
-        {
-
-        } */
-        //ctrlPanel.dispose();
     }
 }

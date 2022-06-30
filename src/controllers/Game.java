@@ -6,27 +6,77 @@ import javax.swing.*;
 
 public class Game  {
 
-    private String Player1Name, Player2Name;
+    private Player player1, player2;
     private Couleur Player1Color, Player2Color;
     private ScorePanel score_panel;
+    private JFrame framePlate;
+    private ControlPanel ctrlPan;
 
-    public Game( String name1, Couleur color1, String name2, Couleur color2)
+
+    public Game( )
     {
-        JFrame f = new JFrame();
+        this.player1 = new Player();
+        this.player2 = new Player();
+        this.ctrlPan = new ControlPanel("Jeu de dames", this);
+        this.ctrlPan.setVisible(true);
+    }
 
-        this.Player1Name = name1;
-        this.Player1Color = color1;
-        this.Player2Name = name2;
-        this.Player2Color = color2;
+    public void setColorPlayer1( Couleur color)
+    {
+        this.player1.setColor(color);
+    }
 
-        f.setSize(600, 600);
-        f.setLocationRelativeTo(null);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.add(new Plate());
-        f.setVisible(true);
+    public void decPawnWhite()
+    {
+        if( this.player1.getColor() == Couleur.BLANC) {
+            this.player1.decrementPawn();
+        }
+        else {
+            this.player2.decrementPawn();
+        }
+        this.score_panel.ChangePlayersPawnNbr();
+    }
 
+    public void decPawnBlack()
+    {
+        if( this.player1.getColor() == Couleur.NOIR) {
+            this.player1.decrementPawn();
+        }
+        else {
+            this.player2.decrementPawn();
+        }
+        this.score_panel.ChangePlayersPawnNbr();
+    }
 
-        score_panel = new ScorePanel( this.Player1Name, this.Player1Color, this.Player2Name, this.Player2Color);
-        score_panel.setVisible(true);
+    public void setNamePlayer1( String name)
+    {
+        this.player1.setName(name);
+    }
+
+    public void setColorPlayer2( Couleur color)
+    {
+        this.player2.setColor(color);
+    }
+
+    public void setNamePlayer2( String name)
+    {
+        this.player2.setName(name);
+    }
+
+    public void startPlate()
+    {
+        this.framePlate = new JFrame();
+
+        this.framePlate.setSize(600, 600);
+        this.framePlate.setLocationRelativeTo(null);
+        this.framePlate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.framePlate.add(new Plate(this));
+        this.framePlate.setVisible(true);
+    }
+
+    public void startScorePanel()
+    {
+        this.score_panel = new ScorePanel( this.player1, this.player2);
+        this.score_panel.setVisible(true);
     }
 }

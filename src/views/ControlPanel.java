@@ -2,6 +2,8 @@ package views;
 
 import javax.swing.*;
 
+import controllers.*;
+
 import Listeners.*;
 
 import models.*;
@@ -18,9 +20,11 @@ public class ControlPanel extends JFrame
 
 	private Couleur player1Color, player2Color;
 
+	private Game game;
+
 	private JTextField textPlayer1, textPlayer2;
 
-	public ControlPanel(String titre)
+	public ControlPanel(String titre, Game newGame)
 	{
 	      this.setSize(580,260);
 	      this.setTitle(titre);
@@ -28,6 +32,7 @@ public class ControlPanel extends JFrame
 	      this.setLocationRelativeTo(null);
 	      this.setLayout(null);
 	      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		  this.game = newGame;
 	      this.buildWindow();
 	}
 
@@ -44,31 +49,17 @@ public class ControlPanel extends JFrame
 		}
 	}
 
-	public String getPlayerName( Player player)
+	public String getPlayer1Name( )
 	{
-		if( player == Player.PLAYER1)
-		{
-			return this.textPlayer1.getText();
-		}
-		else
-		{
-			return this.textPlayer2.getText();
-		}
+		return this.textPlayer1.getText();
 	}
 
-	public Couleur getPlayerColor( Player player)
+	public String getPlayer2Name( )
 	{
-		if( player == Player.PLAYER1)
-		{
-			return this.player1Color;
-		}
-		else
-		{
-			return this.player2Color;
-		}
+		return this.textPlayer2.getText();
 	}
 
-	private void buildWindow()
+	private void buildWindow( )
 	{
 		JLabel labelPlayer1 = new JLabel("Player 1 :");
 		labelPlayer1.setLocation(10,10);
@@ -95,12 +86,15 @@ public class ControlPanel extends JFrame
 		labelColorPlayer1.setSize(200,20);
 	    this.add(labelColorPlayer1);
 
+		this.game.setColorPlayer1( Couleur.BLANC);
+		this.game.setColorPlayer2( Couleur.NOIR);
+
 		this.labelColorPlayer2 = new JLabel("Player 2 color is Black");
 		this.labelColorPlayer2.setLocation(300, 100);
 		this.labelColorPlayer2.setSize(200, 20);
 		this.add(this.labelColorPlayer2);
 
-		JPanel panelColorPlayer1 = this.buildPanel(10, 65, Player.PLAYER1, Couleur.BLANC);
+		JPanel panelColorPlayer1 = this.buildPanel(10, 65);
 		this.player1Color = Couleur.BLANC;
 		this.player2Color = Couleur.NOIR;
 	    this.add(panelColorPlayer1);
@@ -109,16 +103,19 @@ public class ControlPanel extends JFrame
         boutonAnnuler.setLocation(180,200);
         boutonAnnuler.setSize(90,20);
 	    this.add(boutonAnnuler);
-		boutonAnnuler.addActionListener(new ListenerControlPanel( buttonType.CANCEL, Player.PLAYER1,this));
+		boutonAnnuler.addActionListener(new ListenerControlPanel( buttonType.CANCEL, this.game,this));
 
 		JButton boutonOK = new JButton("OK");
 	    boutonOK.setLocation(280,200);
 	    boutonOK.setSize(90,20);
 	    this.add(boutonOK);
-		boutonOK.addActionListener(new ListenerControlPanel( buttonType.OK, Player.PLAYER1,this));
+		boutonOK.addActionListener(new ListenerControlPanel( buttonType.OK, this.game,this));
 	}
 
-	private JPanel buildPanel(int x, int y, Player player, Couleur color)
+	/*
+	 * buildPanel is used to build radio button for player 1 color selection
+	 */
+	private JPanel buildPanel(int x, int y)
 	{
 		JPanel panel;
 		ButtonGroup buttonColor;
@@ -131,16 +128,8 @@ public class ControlPanel extends JFrame
 	    panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	    panel.setLayout(null);
 
-		if( color == Couleur.BLANC)
-		{
-			blanc = new JRadioButton("White", true);
-			noir = new JRadioButton("Black", false);
-		}
-		else
-		{
-			blanc = new JRadioButton("White", false);
-			noir = new JRadioButton("Black", true);
-		}
+		blanc = new JRadioButton("White", true);
+		noir = new JRadioButton("Black", false);
 
 	    blanc.setLocation(5,15);
 	    blanc.setSize(80,20);
@@ -155,8 +144,8 @@ public class ControlPanel extends JFrame
 		buttonColor.add(noir);
 
 		// Register listener for the radio button
-		blanc.addActionListener(new ListenerControlPanel( buttonType.WHITE, player, this));
-		noir.addActionListener(new ListenerControlPanel( buttonType.BLACK, player, this));
+		blanc.addActionListener(new ListenerControlPanel( buttonType.WHITE, this.game, this));
+		noir.addActionListener(new ListenerControlPanel( buttonType.BLACK, this.game, this));
 
 		return panel;
 	}
